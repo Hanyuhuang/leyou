@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("brand")
 public class BrandController {
@@ -51,10 +53,14 @@ public class BrandController {
         return ResponseEntity.ok(null);
     }
 
-    @PostMapping()
-    public ResponseEntity<Integer> addBrand(Brand brand){
-        int result = brandService.insertBrand(brand);
-        if (result<1) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return ResponseEntity.ok(null);
+    /**
+     * 新增品牌
+     * @param brand
+     * @return
+     */
+    @PostMapping
+    public ResponseEntity<Void> saveBrand(Brand brand, @RequestParam("cids") List<Long> cids) {
+        this.brandService.saveBrand(brand, cids);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
